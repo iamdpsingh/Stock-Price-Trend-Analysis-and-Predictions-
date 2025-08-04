@@ -1,1 +1,14 @@
-*.db
+# Python
+*.pyc
+.env
+# Node/React
+node_modules/
+build/
+.env.local
+# VSCode/IDE/editor
+.vscode/
+.idea/
+*.swp
+# General
+.DS_Store
+*.log
