@@ -1,7 +1,3 @@
-<<<<<<< HEAD
-# Stock-Price-Trend-Analysis-and-Predictions-
-Stock Price Trend Analysis and Predictions 
-=======
 # Stock Price Trend Analysis and Predictions
 
 A modern personal web platform for:
