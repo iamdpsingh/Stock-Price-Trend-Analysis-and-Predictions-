@@ -1,7 +1,16 @@
 from fastapi import FastAPI
+from app.db.database import user_collection
 
 app = FastAPI()
 
 @app.get("/")
-def read_root():
-    return {"msg": "Welcome to Smart Stock Platform backend."}
+async def root():
+    return {"msg": "Welcome to Stock Price Trend Analysis and Predictions backend."}
+
+@app.get("/dbtest")
+async def dbtest():
+    users = await user_collection.find().to_list(1)
+    return {
+        "db_connected": True, 
+        "first_user": users[0] if users else None
+        }
