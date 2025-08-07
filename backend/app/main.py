@@ -1,7 +1,9 @@
 from fastapi import FastAPI
 from app.db.database import user_collection
+from app.api import auth
 
 app = FastAPI()
+app.include_router(auth.router)
 
 @app.get("/")
 async def root():
@@ -14,3 +16,5 @@ async def dbtest():
         "db_connected": True, 
         "first_user": users[0] if users else None
         }
+    
+
