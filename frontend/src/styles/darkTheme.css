@@ -1,0 +1,86 @@
+/* Basic dark mode styles for neat UI */
+
+body {
+  margin: 0;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background-color: #121212;
+  color: #e0e0e0;
+}
+
+.container {
+  width: 100%;
+  max-width: 400px;
+  margin: 3rem auto;
+  padding: 2rem;
+  background-color: #1e1e1e;
+  border-radius: 8px;
+  box-shadow: 0 4px 10px rgba(255, 255, 255, 0.1);
+}
+
+input[type="text"],
+input[type="password"] {
+  width: 100%;
+  padding: 12px 15px;
+  margin: 8px 0 20px 0;
+  border: none;
+  border-radius: 5px;
+  background: #2c2c2c;
+  color: #e0e0e0;
+  font-size: 1rem;
+}
+
+input::placeholder {
+  color: #888;
+}
+
+button {
+  width: 100%;
+  padding: 12px;
+  background-color: #007acc;
+  border: none;
+  border-radius: 5px;
+  color: #fff;
+  cursor: pointer;
+  font-weight: bold;
+  transition: background-color 0.3s ease;
+}
+
+button:hover {
+  background-color: #005fa3;
+}
+
+.error {
+  color: #ff6b6b;
+  margin-bottom: 1rem;
+  font-weight: 600;
+  text-align: center;
+}
+
+nav {
+  display: flex;
+  justify-content: flex-end;
+  padding: 1rem 2rem;
+  background-color: #1e1e1e;
+}
+
+nav button {
+  width: auto;
+  padding: 8px 15px;
+  background-color: #d32f2f;
+  border-radius: 5px;
+}
+
+nav button:hover {
+  background-color: #9a2020;
+}
+
+a {
+  color: #007acc;
+  text-decoration: none;
+  display: inline-block;
+  margin-top: 1rem;
+}
+
+a:hover {
+  text-decoration: underline;
+}

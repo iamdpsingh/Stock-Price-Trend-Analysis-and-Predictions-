@@ -1,68 +1,89 @@
-from pydantic import BaseModel, Field
-from typing import Optional
 from bson import ObjectId
+from pydantic import BaseModel, Field, validator
+from typing import Optional
 
-class PyObjectId(ObjectId):
-    @classmethod
-    def __get_validators__(cls):
-        yield cls.validate
 
-    @classmethod
-    def validate(cls, v):
-        if not ObjectId.is_valid(v):
-            raise ValueError("Invalid objectid")
-        return ObjectId(v)
-
-    @classmethod
-    def __get_pydantic_json_schema__(cls, core_schema, handler):
-        # JSONSchema for ObjectId is a string with 24 hex chars
-        return {
-            "type": "string",
-            "pattern": "^[a-fA-F0-9]{24}$",
-            "examples": ["507f1f77bcf86cd799439011"]
-        }
+def is_valid_object_id(v: str) -> bool:
+    """Check if a string is a valid MongoDB ObjectId."""
+    return ObjectId.is_valid(v)
 
 
 class User(BaseModel):
-    id: PyObjectId = Field(default_factory=PyObjectId, alias="_id")
+    id: Optional[str] = Field(None, alias="_id")
     username: str
     hashed_password: str
+    role: str = "user"
     is_active: bool = True
 
-    class Config:
-        validate_by_name = True  # renamed from allow_population_by_field_name
-        arbitrary_types_allowed = True
-        json_encoders = {ObjectId: str}
-
-
-class Stock(BaseModel):
-    id: PyObjectId = Field(default_factory=PyObjectId, alias="_id")
-    symbol: str
-    name: str
-    exchange: str
+    @validator("id", pre=True, always=True)
+    def validate_object_id(cls, v):
+        if v is None:
+            return v
+        if isinstance(v, ObjectId):
+            return str(v)
+        if not is_valid_object_id(v):
+            raise ValueError("Invalid ObjectId")
+        return v
 
     class Config:
-        validate_by_name = True
-        arbitrary_types_allowed = True
-        json_encoders = {ObjectId: str}
+        allow_population_by_field_name = True
+        schema_extra = {
+            "example": {
+                "_id": "507f1f77bcf86cd799439011",
+                "username": "exampleuser",
+                "hashed_password": "...",
+                "role": "user",
+                "is_active": True,
+            }
+        }
 
 
 class UserCreate(BaseModel):
     username: str
     password: str
+    role: Optional[str] = "user"  # default to user, can be set to 'admin'
 
 
 class UserOut(BaseModel):
-    id: Optional[PyObjectId] = Field(alias="_id")
+    id: Optional[str] = Field(None, alias="_id")
     username: str
-    is_active: bool = True
+    role: str
+    is_active: bool
+
+    @validator("id", pre=True, always=True)
+    def validate_object_id(cls, v):
+        if v is None:
+            return v
+        if isinstance(v, ObjectId):
+            return str(v)
+        if not is_valid_object_id(v):
+            raise ValueError("Invalid ObjectId")
+        return v
 
     class Config:
-        validate_by_name = True
-        arbitrary_types_allowed = True
-        json_encoders = {ObjectId: str}
+        allow_population_by_field_name = True
 
 
 class Token(BaseModel):
     access_token: str
     token_type: str
+
+
+class Stock(BaseModel):
+    id: Optional[str] = Field(None, alias="_id")
+    symbol: str
+    name: str
+    sector: str
+
+    @validator("id", pre=True, always=True)
+    def validate_object_id(cls, v):
+        if v is None:
+            return v
+        if isinstance(v, ObjectId):
+            return str(v)
+        if not is_valid_object_id(v):
+            raise ValueError("Invalid ObjectId")
+        return v
+
+    class Config:
+        allow_population_by_field_name = True
