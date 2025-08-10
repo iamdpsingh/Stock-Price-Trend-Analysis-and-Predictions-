@@ -1,6 +1,6 @@
 from bson import ObjectId
 from pydantic import BaseModel, Field, validator
-from typing import Optional
+from typing import Optional, List
 
 
 def is_valid_object_id(v: str) -> bool:
@@ -26,8 +26,10 @@ class User(BaseModel):
         return v
 
     class Config:
-        allow_population_by_field_name = True
-        schema_extra = {
+        validate_by_name = True
+        arbitrary_types_allowed = True
+        json_encoders = {ObjectId: str}
+        json_schema_extra = {
             "example": {
                 "_id": "507f1f77bcf86cd799439011",
                 "username": "exampleuser",
@@ -73,17 +75,18 @@ class Stock(BaseModel):
     id: Optional[str] = Field(None, alias="_id")
     symbol: str
     name: str
-    sector: str
-
-    @validator("id", pre=True, always=True)
-    def validate_object_id(cls, v):
-        if v is None:
-            return v
-        if isinstance(v, ObjectId):
-            return str(v)
-        if not is_valid_object_id(v):
-            raise ValueError("Invalid ObjectId")
-        return v
+    sector: Optional[str] = ""
 
     class Config:
         allow_population_by_field_name = True
+
+class GroupCreate(BaseModel):
+    name: str
+    description: Optional[str] = ""
+
+class GroupOut(BaseModel):
+    id: Optional[str] = Field(None, alias="_id")
+    name: str
+    description: str
+    members: List[str] = []
+

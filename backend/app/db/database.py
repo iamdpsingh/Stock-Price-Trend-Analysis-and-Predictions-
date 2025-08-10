@@ -11,5 +11,6 @@ client = AsyncIOMotorClient(MONGODB_URI)
 db = client[DB_NAME]
 
 user_collection = db.get_collection("users")
-stock_collection = db.get_collection("stocks")  # Placeholder, extend as needed
+stock_collection = db.get_collection("stocks")
+group_collection = db["groups"]                   # Placeholder, extend as needed
 # Add more collections as required

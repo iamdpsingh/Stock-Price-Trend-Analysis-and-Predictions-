@@ -1,10 +1,14 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from app.api import auth
-
+from app.api import auth, stocks, follow, groups
 
 app = FastAPI()
+
 app.include_router(auth.router)
+app.include_router(stocks.router)
+app.include_router(follow.router)
+app.include_router(groups.router)
+
 
 origins = [
     "http://localhost",
