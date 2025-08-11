@@ -1,0 +1,19 @@
+fastapi
+uvicorn[standard]
+motor
+pydantic
+python-dotenv
+passlib[bcrypt]
+pyjwt
+httpx
+pandas
+numpy
+scikit-learn
+tensorflow  # or pytorch, depending on ML choice
+pandas_ta
+celery[redis]
+redis
+loguru
+email-validator
+pytest
+watchdog
